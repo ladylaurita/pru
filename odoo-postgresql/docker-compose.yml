@@ -1,0 +1,30 @@
+  version: '2'
+services:
+  db:
+    image: postgres:15
+    user: root
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=usuario123      
+      - POSTGRES_DB=postgres
+    restart: always          
+    volumes:
+        - ./postgresql:/var/lib/postgresql/data
+
+  odoo16:
+    image: odoo:16
+    user: root
+    depends_on:
+      - db
+    ports:
+      - "10016:8069"
+    tty: true
+    command: --
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=usuario123
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./etc:/etc/odoo
+    restart: always          

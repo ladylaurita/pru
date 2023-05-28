@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    networks:
+      - web
+    volumes:
+      - data_grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_grafana
+    networks:
+      - web
+    command: --init-file /data/application/proyecto.sql
+    volumes:
+      - ./proyecto.sql:/data/application/proyecto.sql
+      - mysql_grafana:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_USER=laura
+      - MYSQL_PASSWORD=test
+      - MYSQL_DATABASE=h2olock
+    ports:
+      - 3307:3306
+
+volumes:
+  data_grafana:
+  mysql_grafana:
+
+networks:
+  web:
+    driver: bridge
