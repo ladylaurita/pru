@@ -7,10 +7,8 @@ services:
     container_name: grafana
     networks:
       - web
-    command: --init-file /data/application/h2olock.json
     volumes:
-      - ./h2olock.json:/data/application/h2olock.json
-      - data_grafana:/var/lib/grafana
+      - data_grafana:/var/lib/grafana/dashboards
     ports:
       - 3000:3000
 
