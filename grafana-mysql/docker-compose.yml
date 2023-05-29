@@ -11,6 +11,16 @@ services:
       - data_grafana:/var/lib/grafana/dashboards
     ports:
       - 3000:3000
+      
+  prom_mysql_exporter:
+    image: prom/mysqld-exporter
+    links:
+      - mysql
+    ports:
+      - '9104:9104'
+    environment:
+      DATA_SOURCE_NAME: root:secret@(mysql:3307)/h2olock
+    command: /bin/mysqld_exporter collect.binlog_size=true collect.info_schema.processlist=true
 
   mysql:
     image: mysql:8
